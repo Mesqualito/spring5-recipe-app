@@ -27,6 +27,15 @@ public class Recipe {
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
 
+    // "Recipe"-Object is the "owner" or "parent" in
+    // the bi-directional relation with "Ingredient"-Objects.
+    // mappedBy names the property in the child class
+    // which holds the "parent" recipe-object
+    // this means: the set of ingredients of each object of type Recipe
+    // will be a property called "recipe" in the "child" objects
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private Set<Ingredients> ingredients;
+
     public Long getId() {
         return id;
     }
