@@ -13,7 +13,11 @@ public class Ingredient {
     private String description;
     private BigDecimal amount;
 
-    // private UnitOfMeasure measUnit;
+    // uni-directional one-to-one relationship
+    // FetchType.EAGER: tells Hibernate to fetch
+    // the related object every time
+    @OneToOne(fetch = FetchType.EAGER)
+    private UnitOfMeasure measUnit;
 
     // building a bi-directional relationship
     // Cascading is defined by the owner of the
@@ -51,5 +55,13 @@ public class Ingredient {
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    public UnitOfMeasure getMeasUnit() {
+        return measUnit;
+    }
+
+    public void setMeasUnit(UnitOfMeasure measUnit) {
+        this.measUnit = measUnit;
     }
 }
