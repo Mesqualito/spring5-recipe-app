@@ -1,6 +1,7 @@
 package com.eigenbaumarkt.spring5recipeapp.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Recipe {
@@ -16,8 +17,13 @@ public class Recipe {
     private String source;
     private String url;
     private String directions;
-    // TODO add
-    // private Difficulty difficulty;
+
+    // EnumType.ORDINAL would persist the values
+    // as 1, 2, 3... (not EASY, MEDIUM, HARD as EnumType.STRING)
+    // ! Use STRING-value, because the values will survive even if
+    // the sequence of the values in the Enum changes !
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
 
     // @Lob tells Hibernate here to use a "Binary Large Object-" (BLOB-) field in the database
     @Lob
@@ -34,7 +40,7 @@ public class Recipe {
     // this means: the set of ingredients of each object of type Recipe
     // will be a property called "recipe" in the "child" objects
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredients> ingredients;
+    private Set<Ingredient> ingredients;
 
     public Long getId() {
         return id;
@@ -100,6 +106,14 @@ public class Recipe {
         this.directions = directions;
     }
 
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
     public Byte[] getImage() {
         return image;
     }
@@ -114,5 +128,13 @@ public class Recipe {
 
     public void setNotes(Notes notes) {
         this.notes = notes;
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }
