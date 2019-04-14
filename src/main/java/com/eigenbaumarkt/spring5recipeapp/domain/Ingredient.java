@@ -17,13 +17,26 @@ public class Ingredient {
     // FetchType.EAGER: tells Hibernate to fetch
     // the related object every time
     @OneToOne(fetch = FetchType.EAGER)
-    private UnitOfMeasure measUnit;
+    private UnitOfMeasure uom;
 
     // building a bi-directional relationship
     // Cascading is defined by the owner of the
     // relationship
     @ManyToOne
     private Recipe recipe;
+
+    public Ingredient(){
+
+    }
+
+    public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom, Recipe recipe){
+
+        this.description = description;
+        this.amount = amount;
+        this.uom = uom;
+        this.recipe = recipe;
+
+    }
 
     public Long getId() {
         return id;
@@ -57,11 +70,11 @@ public class Ingredient {
         this.recipe = recipe;
     }
 
-    public UnitOfMeasure getMeasUnit() {
-        return measUnit;
+    public UnitOfMeasure getUom() {
+        return uom;
     }
 
-    public void setMeasUnit(UnitOfMeasure measUnit) {
-        this.measUnit = measUnit;
+    public void setUom(UnitOfMeasure uom) {
+        this.uom = uom;
     }
 }

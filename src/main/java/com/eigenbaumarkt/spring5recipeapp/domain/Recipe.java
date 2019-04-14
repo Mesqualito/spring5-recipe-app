@@ -1,6 +1,7 @@
 package com.eigenbaumarkt.spring5recipeapp.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,8 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
+
+    @Lob
     private String directions;
 
     // EnumType.ORDINAL would persist the values
@@ -34,7 +37,7 @@ public class Recipe {
     private Notes notes;
 
     @ManyToMany
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
     // "Recipe"-Object is the "owner" or "parent" in
     // the bi-directional relation with "Ingredient"-Objects.
@@ -43,7 +46,7 @@ public class Recipe {
     // this means: the set of ingredients of each object of type Recipe
     // will be a property called "recipe" in the "child" objects
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     public Long getId() {
         return id;
