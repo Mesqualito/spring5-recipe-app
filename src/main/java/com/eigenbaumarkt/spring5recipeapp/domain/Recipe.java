@@ -134,7 +134,17 @@ public class Recipe {
 
     public void setNotes(Notes notes) {
         this.notes = notes;
+        notes.setRecipe(this);
     }
+
+    // convenience-Method, vereint die Logik an einem Punkt
+    public Recipe addIngredient(Ingredient ingredient){
+        ingredient.setRecipe(this);
+        this.ingredients.add(ingredient);
+        return this;
+    }
+
+    // TODO: removeIngredient()
 
     public Set<Ingredient> getIngredients() {
         return ingredients;
