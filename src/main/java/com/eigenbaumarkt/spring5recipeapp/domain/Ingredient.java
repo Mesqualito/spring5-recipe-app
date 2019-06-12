@@ -3,6 +3,9 @@ package com.eigenbaumarkt.spring5recipeapp.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+// not working:
+// @Data
+// will cause Hibernate and h2 to fail ?!
 @Entity
 public class Ingredient {
 
