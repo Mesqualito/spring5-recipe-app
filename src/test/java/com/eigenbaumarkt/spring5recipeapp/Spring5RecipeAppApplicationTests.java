@@ -9,6 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class Spring5RecipeAppApplicationTests {
 
+    // Standard Integration Test:
+    // is the Spring framework coming up?
     @Test
     public void contextLoads() {
     }
