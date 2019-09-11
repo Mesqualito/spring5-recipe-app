@@ -32,21 +32,26 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Beschreibung</th>
+                                <th>Ansicht</th>
                             </tr>
                             </thead>
                             <!-- the two first rows will be removed by the thymeleaf templating engine at runtime and
                             are only used for previewing the natural templating, how the table looks, the effects etc. -->
                             <tr th:remove="all">
-                                <td th:text="${recipe.id}">1</td>
-                                <td th:text="${recipe.description}">Leckere Spareribs, fest codiert</td>
+                                <td>1</td>
+                                <td">Leckere Spareribs, fest codiert</td>
+                                <td><a href="#">Ansicht</a></td>
                             </tr>
                             <tr th:remove="all">
-                                <td th:text="${recipe.id}">2</td>
-                                <td th:text="${recipe.description}">Wurmstichiges Insektenmus, fest codiert</td>
+                                <td>2</td>
+                                <td>Wurmstichiges Insektenmus, fest codiert</td>
+                                <td><a href="#">Ansicht</a></td>
                             </tr>
                             <tr th:each="recipe : ${recipes}">
-                                <td th:text="${recipe.id}">3</td>
+                                <!--/*@thymesVar id="recipe" type="com.eigenbaumarkt.spring5recipeapp.domain.Recipe"*/-->
+                                <td th:text=com.eigenbaumarkt.spring5recipeapp.domain.Recipe"${recipe.id}">3</td>
                                 <td th:text="${recipe.description}">Kochzeile 3, fest codiert</td>
+                                <td><a href="#" th:href="@{'/recipe/show/' + ${recipe.id}}">Ansicht</a></td>
                             </tr>
                         </table>
                     </div>

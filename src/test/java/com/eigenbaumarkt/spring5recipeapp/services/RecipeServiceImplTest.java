@@ -1,5 +1,8 @@
 package com.eigenbaumarkt.spring5recipeapp.services;
 
+import com.eigenbaumarkt.spring5recipeapp.commands.RecipeCommand;
+import com.eigenbaumarkt.spring5recipeapp.converters.RecipeCommandToRecipe;
+import com.eigenbaumarkt.spring5recipeapp.converters.RecipeToRecipeCommand;
 import com.eigenbaumarkt.spring5recipeapp.domain.Recipe;
 import com.eigenbaumarkt.spring5recipeapp.repositories.RecipeRepository;
 import org.junit.Before;
@@ -8,45 +11,82 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class RecipeServiceImplTest {
 
     RecipeServiceImpl recipeService;
 
-    // as we do not want to use a database or other dependencies in Unit tests,
-    // we create a Mockito Mock as a RecipeRepository-object, a required dependency for testing the RecipeServiceImpl
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @Before
     public void setUp() throws Exception {
-        // for this test, the above Mock recipeRepository will be initiated
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
-    public void getRecipes() {
-
-        // fill the Mock-Object recipeRepository with one entry for the size()-test below
+    public void getRecipeByIdTest() throws Exception {
         Recipe recipe = new Recipe();
-        HashSet recipesData = new HashSet();
-        recipesData.add(recipe);
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        // tell Mockito to use this as return value in its Mock-Object recipeRepository
-        when(recipeRepository.findAll()).thenReturn(recipesData);
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
 
-        // we need the recipeService from the setUp()-method which in turn needs the Mock recipeRepository
-        // to be able to do our Unit test now
-        Set<Recipe> recipes = recipeService.getRecipes();
-        assertEquals(recipes.size(), 1);
+        Recipe recipeReturned = recipeService.findById(1L);
 
-        // we also want to verify the interaction with the Mock-Object;
-        // we test, if the findAll()-method of the Mock-Object recipeRepository is called once (and only once)
-        verify(recipeRepository, times(1)).findAll();
+        assertNotNull("Null recipe returned", recipeReturned);
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, never()).findAll();
     }
+
+    @Test
+    public void getRecipeComandByIdTest() throws Exception {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        when(recipeToRecipeCommand.convert(any())).thenReturn(recipeCommand);
+
+        RecipeCommand commandById = recipeService.findCommandById(1L);
+
+        assertNotNull("Null recipe returned", commandById);
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, never()).findAll();
+    }
+
+    @Test
+    public void getRecipesTest() throws Exception {
+
+        Recipe recipe = new Recipe();
+        HashSet receipesData = new HashSet();
+        receipesData.add(recipe);
+
+        when(recipeRepository.findAll()).thenReturn(receipesData);
+
+        Set<Recipe> recipes = recipeService.getRecipes();
+
+        assertEquals(recipes.size(), 1);
+        verify(recipeRepository, times(1)).findAll();
+        verify(recipeRepository, never()).findById(anyLong());
+    }
+
 }
