@@ -23,5 +23,4 @@ public class Notes {
     // @Lob tells Hibernate here to use a "Character Large Object-" (CLOB-) field in the database
     @Lob
     private String recipeNotes;
-
 }
