@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UnitOfMeasureCommandToUnitOfMeasure implements Converter<UnitOfMeasureCommand, UnitOfMeasure> {
 
+    // Spring ist nicht thread-sicher, deswegen hier der Einsatz von Lomboks '@Synchronized',
+    // um die Anwendung in einem multi-threaded environment verwenden zu können
     @Synchronized
     @Nullable
     @Override
@@ -18,6 +20,7 @@ public class UnitOfMeasureCommandToUnitOfMeasure implements Converter<UnitOfMeas
             return null;
         }
 
+        // 'final' für Code-Sicherheit: immutable uom
         final UnitOfMeasure uom = new UnitOfMeasure();
         uom.setId(source.getId());
         uom.setDescription(source.getDescription());

@@ -7,16 +7,17 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+// implementing org.springframework.core.convert.converter.Converter as '@FunctionalInterface'
 @Component
 public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
-    private final CategoryCommandToCategory categoryConveter;
+    private final CategoryCommandToCategory categoryConverter;
     private final IngredientCommandToIngredient ingredientConverter;
     private final NotesCommandToNotes notesConverter;
 
     public RecipeCommandToRecipe(CategoryCommandToCategory categoryConveter, IngredientCommandToIngredient ingredientConverter,
                                  NotesCommandToNotes notesConverter) {
-        this.categoryConveter = categoryConveter;
+        this.categoryConverter = categoryConveter;
         this.ingredientConverter = ingredientConverter;
         this.notesConverter = notesConverter;
     }
@@ -43,7 +44,7 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
         if (source.getCategories() != null && source.getCategories().size() > 0){
             source.getCategories()
-                    .forEach( category -> recipe.getCategories().add(categoryConveter.convert(category)));
+                    .forEach( category -> recipe.getCategories().add(categoryConverter.convert(category)));
         }
 
         if (source.getIngredients() != null && source.getIngredients().size() > 0){
