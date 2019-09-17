@@ -1,9 +1,12 @@
 package com.eigenbaumarkt.spring5recipeapp.controllers;
 
+import com.eigenbaumarkt.spring5recipeapp.commands.RecipeCommand;
 import com.eigenbaumarkt.spring5recipeapp.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -22,5 +25,24 @@ public class RecipeController {
 
         // tell thymeleaf to use the new html-template 'show.html'
         return "recipe/show";
+    }
+
+    @RequestMapping("recipe/new")
+    public String newRecipe(Model model) {
+        model.addAttribute("recipe", new RecipeCommand());
+
+        return "recipe/recipeform";
+    }
+
+    // if the server will receive a POST request via '[URL]/recipe', this method will be called
+    @PostMapping
+    @RequestMapping("recipe")
+    // '@ModelAttribute' tells Spring to bind the form POST parameters
+    // to the RecipeCommand-Object (by the naming conventions in the form)
+    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+        RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
+
+        // 'redirect:...' tells Spring to redirect to a specific URL
+        return "redirect:/recipe/show/" + savedCommand.getId();
     }
 }
