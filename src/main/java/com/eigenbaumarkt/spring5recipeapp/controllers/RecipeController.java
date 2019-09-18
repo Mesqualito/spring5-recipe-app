@@ -19,6 +19,8 @@ public class RecipeController {
     }
 
     // change path to "REST-like" concept
+    // das 'model' kommt von Spring MVC, die Eigenschaft 'recipe', ein 'Recipe'-Objekt wird mit der Methode 'findById()'
+    // vom 'RecipeServiceImpl' geholt:
     @RequestMapping("/recipe/{id}/show")
     public String showById(@PathVariable String id, Model model){
 
@@ -51,6 +53,6 @@ public class RecipeController {
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
 
         // 'redirect:...' tells Spring to redirect to a specific URL
-        return "redirect:/recipe/show/" + savedCommand.getId();
+        return "redirect:/recipe/" + savedCommand.getId() + "/show";
     }
 }

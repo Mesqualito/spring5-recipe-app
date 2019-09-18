@@ -35,6 +35,7 @@
                                 <th>ID</th>
                                 <th>Beschreibung</th>
                                 <th>Ansicht</th>
+                                <th>Update</th>
                             </tr>
                             </thead>
                             <!-- the two first rows will be removed by the thymeleaf templating engine at runtime and
@@ -53,6 +54,7 @@
                                 <td th:text="${recipe.id}">3</td>
                                 <td th:text="${recipe.description}">Kochzeile 3, fest codiert</td>
                                 <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show'}">Ansicht</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update'}">Update</a></td>
                             </tr>
                         </table>
                     </div>
