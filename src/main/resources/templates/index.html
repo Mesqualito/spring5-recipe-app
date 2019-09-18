@@ -16,6 +16,8 @@
             crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<!--/*@thymesVar id="recipes" type="java.util.List"*/-->
+<!--/*@thymesVar id="recipe" type="com.eigenbaumarkt.spring5recipeapp.domain.Recipe"*/-->
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <!-- center content the old bootstrap3.3 way -->
@@ -48,10 +50,9 @@
                                 <td><a href="#">Ansicht</a></td>
                             </tr>
                             <tr th:each="recipe : ${recipes}">
-                                <!--/*@thymesVar id="recipe" type="com.eigenbaumarkt.spring5recipeapp.domain.Recipe"*/-->
                                 <td th:text="${recipe.id}">3</td>
                                 <td th:text="${recipe.description}">Kochzeile 3, fest codiert</td>
-                                <td><a href="#" th:href="@{'/recipe/show/' + ${recipe.id}}">Ansicht</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show'}">Ansicht</a></td>
                             </tr>
                         </table>
                     </div>
