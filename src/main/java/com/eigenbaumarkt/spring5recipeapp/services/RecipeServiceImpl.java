@@ -53,8 +53,8 @@ public class RecipeServiceImpl implements RecipeService {
     // gemacht wird und die Methode bei lazy-loaded properties in Multi-threaded environments zu Fehlfunktionen
     // führen könnte
     @Transactional
-    public RecipeCommand findCommandById(Long l) {
-        return recipeToRecipeCommand.convert(findById(l));
+    public RecipeCommand findCommandById(Long id) {
+        return recipeToRecipeCommand.convert(findById(id));
     }
 
     @Override
