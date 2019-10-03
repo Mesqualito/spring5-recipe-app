@@ -49,6 +49,9 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    // '@Transactional' erweitert den Transaktions-Anwendungsbereich, weil eine Conversion außerhalb "des Scopes"
+    // gemacht wird und die Methode bei lazy-loaded properties in Multi-threaded environments zu Fehlfunktionen
+    // führen könnte
     @Transactional
     public RecipeCommand findCommandById(Long l) {
         return recipeToRecipeCommand.convert(findById(l));

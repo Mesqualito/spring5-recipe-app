@@ -16,6 +16,8 @@
             crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<!--/*@thymesVar id="recipes" type="java.util.List"*/-->
+<!--/*@thymesVar id="recipe" type="com.eigenbaumarkt.spring5recipeapp.domain.Recipe"*/-->
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <!-- center content the old bootstrap3.3 way -->
@@ -33,6 +35,7 @@
                                 <th>ID</th>
                                 <th>Beschreibung</th>
                                 <th>Ansicht</th>
+                                <th>Update</th>
                             </tr>
                             </thead>
                             <!-- the two first rows will be removed by the thymeleaf templating engine at runtime and
@@ -48,10 +51,10 @@
                                 <td><a href="#">Ansicht</a></td>
                             </tr>
                             <tr th:each="recipe : ${recipes}">
-                                <!--/*@thymesVar id="recipe" type="com.eigenbaumarkt.spring5recipeapp.domain.Recipe"*/-->
                                 <td th:text="${recipe.id}">3</td>
                                 <td th:text="${recipe.description}">Kochzeile 3, fest codiert</td>
-                                <td><a href="#" th:href="@{'/recipe/show/' + ${recipe.id}}">Ansicht</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show'}">Ansicht</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update'}">Update</a></td>
                             </tr>
                         </table>
                     </div>

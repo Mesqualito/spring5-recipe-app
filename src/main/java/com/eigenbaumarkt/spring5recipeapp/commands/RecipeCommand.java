@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
+// commmand-bean: a simple POJO!
 @Getter
 @Setter
 @NoArgsConstructor
