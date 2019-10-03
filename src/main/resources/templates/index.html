@@ -27,43 +27,43 @@
                 <div class="panel-heading">
                     <h1 class="panel-title">Meine Rezepte!</h1>
                 </div>
-                <div class="panel-body">
-                    <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
-                        <table class="table table-hover">
-                            <thead class="thead-inverse">
-                            <tr>
-                                <th>ID</th>
-                                <th>Beschreibung</th>
-                                <th>Ansicht</th>
-                                <th>Update</th>
-                                <th>Löschen</th>
-                            </tr>
-                            </thead>
-                            <!-- the two first rows will be removed by the thymeleaf templating engine at runtime and
-                            are only used for previewing the natural templating, how the table looks, the effects etc. -->
-                            <tr th:remove="all">
-                                <td>1</td>
-                                <td>Leckere Spareribs, fest codiert</td>
-                                <td><a href="#">Ansicht</a></td>
-                            </tr>
-                            <tr th:remove="all">
-                                <td>2</td>
-                                <td>Wurmstichiges Insektenmus, fest codiert</td>
-                                <td><a href="#">Ansicht</a></td>
-                            </tr>
-                            <tr th:each="recipe : ${recipes}">
-                                <td th:text="${recipe.id}">3</td>
-                                <td th:text="${recipe.description}">Kochzeile 3, fest codiert</td>
-                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show'}">Ansicht</a></td>
-                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update'}">Update</a></td>
-                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/delete'}">Löschen</a></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+        <div class="panel-body">
+            <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
+                <table class="table table-hover">
+                    <thead class="thead-inverse">
+                    <tr>
+                        <th>ID</th>
+                        <th>Beschreibung</th>
+                        <th>Ansicht</th>
+                        <th>Update</th>
+                        <th>Löschen</th>
+                    </tr>
+                    </thead>
+                    <!-- the two first rows will be removed by the thymeleaf templating engine at runtime and
+                    are only used for previewing the natural templating, how the table looks, the effects etc. -->
+                    <tr th:remove="all">
+                        <td>1</td>
+                        <td>Leckere Spareribs, fest codiert</td>
+                        <td><a href="#">Ansicht</a></td>
+                    </tr>
+                    <tr th:remove="all">
+                        <td>2</td>
+                        <td>Wurmstichiges Insektenmus, fest codiert</td>
+                        <td><a href="#">Ansicht</a></td>
+                    </tr>
+                    <tr th:each="recipe : ${recipes}">
+                        <td th:text="${recipe.id}">3</td>
+                        <td th:text="${recipe.description}">Kochzeile 3, fest codiert</td>
+                        <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show'}">Ansicht</a></td>
+                        <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update'}">Update</a></td>
+                        <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/delete'}">Löschen</a></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 </body>
 </html>
