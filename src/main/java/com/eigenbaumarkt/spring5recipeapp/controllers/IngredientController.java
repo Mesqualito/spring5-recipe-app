@@ -1,6 +1,8 @@
 package com.eigenbaumarkt.spring5recipeapp.controllers;
 
 import com.eigenbaumarkt.spring5recipeapp.commands.IngredientCommand;
+import com.eigenbaumarkt.spring5recipeapp.commands.RecipeCommand;
+import com.eigenbaumarkt.spring5recipeapp.commands.UnitOfMeasureCommand;
 import com.eigenbaumarkt.spring5recipeapp.services.IngredientService;
 import com.eigenbaumarkt.spring5recipeapp.services.RecipeService;
 import com.eigenbaumarkt.spring5recipeapp.services.UnitOfMeasureService;
@@ -40,6 +42,27 @@ public class IngredientController {
 
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(ingredientId)));
         return "recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    public String newRecipe(@PathVariable String recipeId, Model model) {
+
+        // make sure we have a good id value
+        // TODO: raise exception if null
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+
+        // need to return back parent id for hidden form property
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        model.addAttribute("ingredient", ingredientCommand);
+
+        // init Uom
+        ingredientCommand.setUom(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+
+        return "recipe/ingredient/ingredientform";
     }
 
     @GetMapping

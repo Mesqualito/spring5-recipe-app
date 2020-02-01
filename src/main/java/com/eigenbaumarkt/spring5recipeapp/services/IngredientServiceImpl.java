@@ -79,12 +79,30 @@ public class IngredientServiceImpl implements IngredientService {
                 .orElseThrow(() -> new RuntimeException("Unit of Measure NOT FOUND"))); // TODO: address this
             } else {
                 // add new ingredient
-                recipe.addIngredient((ingredientCommandToIngredient.convert(command)));
+                recipe.addIngredient(ingredientCommandToIngredient.convert(command));
             }
 
             Recipe savedRecipe = recipeRepository.save(recipe);
 
-            // TODO: check for fail
+            Optional<Ingredient> savedIngredientOptional = savedRecipe.getIngredients().stream()
+                    .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
+                    .findFirst();
+
+            if(!savedIngredientOptional.isPresent()){
+                // check by id not possible - a new Ingredient doesn't have an id yet
+                // we check other properties - not totally save, but best guess
+                savedIngredientOptional = savedRecipe.getIngredients().stream()
+                        .filter(recipeIngredients -> recipeIngredients.getDescription().equals(command.getDescription()))
+                        .filter(recipeIngredients -> recipeIngredients.getAmount().equals(command.getAmount()))
+                        .filter(recipeIngredients -> recipeIngredients.getUom().getId().equals(command.getUom().getId()))
+                        .findFirst();
+
+                // TODO: check for fail
+                return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+
+            }
+
+
 
             return ingredientToIngredientCommand.convert(savedRecipe.getIngredients().stream()
             .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
