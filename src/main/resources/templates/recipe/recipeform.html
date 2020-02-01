@@ -24,7 +24,7 @@
             <!-- 'th:object': passing a recipe command object to the property 'recipe' into the html-'form'-tag -->
             <!-- 'th:action': tells thymeleaf, that the POSTs will go to '[domain]/recipe'; thymeleaf will parse the
             complete URL at runtime -->
-            <form th:object="${recipe}" th:action="@{/recipe/}">
+            <form th:object="${recipe}" th:action="@{/recipe/}" method="post">
                 <!-- this form will be used for creation and update. In case of update, the 'id'-value will not be
                 exposed or editable, but passed in with the command object -->
                 <input type="hidden" th:field="*{id}"/>
@@ -70,10 +70,12 @@
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Difficulty:</label>
-                                    <select class="form-control">
-                                        <option>Easy</option>
-                                        <option>Medium</option>
-                                        <option>Hard</option>
+                                    <select class="form-control" th:field="*{difficulty}">
+                                        // with "T(type)" we are telling timeleaf to give us a type of enum-Java-Object "Difficulty"
+                                        <option th:each="difficultyValue : ${T(com.eigenbaumarkt.spring5recipeapp.domain.Difficulty).values()}"
+                                        th:value="${difficultyValue.name()}"
+                                        th:text="${difficultyValue.name()}">val
+                                        </option>
                                     </select>
                                 </div>
                             </div>
