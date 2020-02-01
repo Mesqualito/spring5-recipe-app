@@ -34,6 +34,8 @@ public class Recipe {
     private Difficulty difficulty;
 
     // @Lob tells Hibernate here to use a "Binary Large Object-" (BLOB-) field in the database
+    // hibernate-Team is recommending using BLOB-field, not primitive type, because primitives can't be null
+    // so use wrappers for the primitives!
     @Lob
     private Byte[] image;
 
