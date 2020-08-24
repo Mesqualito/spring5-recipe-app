@@ -1,14 +1,14 @@
 package com.eigenbaumarkt.spring5recipeapp.controllers;
 
 import com.eigenbaumarkt.spring5recipeapp.commands.RecipeCommand;
+import com.eigenbaumarkt.spring5recipeapp.exceptions.NotFoundException;
 import com.eigenbaumarkt.spring5recipeapp.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @Controller
@@ -24,7 +24,7 @@ public class RecipeController {
     // change path to "REST-like" concept
     // das 'model' kommt von Spring MVC, die Eigenschaft 'recipe', ein 'Recipe'-Objekt wird mit der Methode 'findById()'
     // vom 'RecipeServiceImpl' geholt:
-    public String showById(@PathVariable String id, Model model){
+    public String showById(@PathVariable String id, Model model) {
 
         model.addAttribute("recipe", recipeService.findById(new Long(id)));
 
@@ -39,7 +39,7 @@ public class RecipeController {
     }
 
     @GetMapping("recipe/{id}/update")
-    public String updateRecipe(@PathVariable String id, Model model){
+    public String updateRecipe(@PathVariable String id, Model model) {
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
 
         return "recipe/recipeform";
@@ -62,5 +62,21 @@ public class RecipeController {
 
         recipeService.deleteById(Long.valueOf(id));
         return "redirect:/";
+    }
+
+    // Spring MVC implementation of resolving HTML errors:
+    // ExceptionHandlerExceptionResolver (extending the interface HandlerExceptionResolver), which matches
+    // uncaught exceptions to @ExceptionHandler (use in Controllers!) and can be used with custom "NotFoundException.class"
+    // and custom Thymeleaf template "404error.html"
+    @ResponseStatus(HttpStatus.NOT_FOUND) // Attention: "higher precedence than exception-class" (??)
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handleNotFound() {
+
+        log.error("Handling not found exception");
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("recipe/404error"); // must match Thymeleaf-template (here: "404error.html")
+
+        return modelAndView;
     }
 }
