@@ -70,12 +70,14 @@ public class RecipeController {
     // and custom Thymeleaf template "404error.html"
     @ResponseStatus(HttpStatus.NOT_FOUND) // Attention: "higher precedence than exception-class" (??)
     @ExceptionHandler(NotFoundException.class)
-    public ModelAndView handleNotFound() {
+    public ModelAndView handleNotFound(Exception exception) {
 
         log.error("Handling not found exception");
+        log.error(exception.getMessage());
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("recipe/404error"); // must match Thymeleaf-template (here: "404error.html")
+        modelAndView.addObject("exception", exception);
 
         return modelAndView;
     }
